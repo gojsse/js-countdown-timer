@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head id="head">
+	<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+  	<link rel="stylesheet" href="" />
+    <title></title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw=" crossorigin="anonymous" />
+
+    <style>
+        .countdown-clock {
+            align-items: center;
+            background: #ccc;
+            display: flex;
+            height: 40rem;
+            justify-content: center;
+            padding-bottom: 3rem;
+        }
+
+        .clock {
+            align-items: center;
+            background-color: purple;
+            border-radius: 50%;
+            display: flex;
+            height: 8rem;
+            justify-content: center;
+            margin-right: 1rem;
+            position: relative;
+            width: 8rem;
+        }
+
+        .clock__digit {
+            animation-name: fadeIn;
+            animation-delay: 1s;
+            animation-duration: .25s;
+            animation-fill-mode: forwards;
+            animation-timing-function: ease-in;
+            color: #fff;
+            font-family: courier, serif;
+            height: 2rem;
+            opacity: 0.2;
+        }
+
+        .clock__label {
+            bottom: -3rem;
+            color: #333;
+            font-size: 12px;
+            font-weight: bold;
+            position: absolute;
+            text-transform: uppercase;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- useful things -->
+<!-- https://www.epochconverter.com/ -->
+<!-- https://www.tools4noobs.com/online_tools/seconds_to_hh_mm_ss/ -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <br><br><br><br>
+                <h2 class="text-center">Remaining Time</h2>
+                <div class="countdown-clock">
+                    <div class="clock clock__days">
+                        <!--  style="display: none;" -->
+                        <!-- This needs to be expandable? -->
+                        <!-- Do we want to stick with separate digits or one numeric blob for each days/hours/minutes/seconds? -->
+                        <div class="clock__digit">00</div>
+                        <div class="clock__label">Days</div>
+                    </div>
+                    <div class="clock clock__hours">
+                        <div class="clock__digit">00</div>
+                        <div class="clock__label">Hours</div>
+                    </div>
+                    <div class="clock clock__minutes">
+                        <div class="clock__digit">00</div>
+                        <div class="clock__label">Minutes</div>
+                    </div>
+                    <div class="clock clock__seconds">
+                        <div class="clock__digit">00</div>
+                        <div class="clock__label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        // TODO
+        // document ready
+
+        const endTimeInSeconds = 1577224225; // TODO get this from DB
+        const currentTimeInSeconds = Math.floor(new Date().getTime() / 1000);
+        let countDownTime = endTimeInSeconds - currentTimeInSeconds;
+        const clocks = document.getElementsByClassName('countdown-clock');
+
+        if (countDownTime > 0) {
+            let timer = setInterval(timeCheck, 1000);
+        }
+
+        function timeCheck() {
+            if (countDownTime === 0) {
+                clearInterval(timer);
+                console.log('You have reached the end.');
+            }
+
+            --countDownTime;
+
+            updateVisuals();
+        }
+
+
+
+        // TODO support multiple clocks
+        const clockOne     = clocks[0];
+        const clockDays    = clockOne.getElementsByClassName('clock__days'); // 0-???
+        const clockHours   = clockOne.getElementsByClassName('clock__hours'); // 0-23
+        const clockMinutes = clockOne.getElementsByClassName('clock__minutes'); // 0-59
+        const clockSeconds = clockOne.getElementsByClassName('clock__seconds'); // 00-59
+
+        // Update visuals
+        function updateVisuals() {
+            const daysDigit    = clockDays[0].getElementsByClassName('clock__digit');
+            const hoursDigit   = clockHours[0].getElementsByClassName('clock__digit');
+            const minutesDigit = clockMinutes[0].getElementsByClassName('clock__digit');
+            const secondsDigit = clockSeconds[0].getElementsByClassName('clock__digit');
+
+            const newTime = new Date(countDownTime * 1000);
+            daysDigit[0].innerHTML   = calculateDays(newTime);
+            hoursDigit[0].innerHTML   = calculateHours(newTime);
+            minutesDigit[0].innerHTML = calculateMinutes(newTime);
+            secondsDigit[0].innerHTML = calculateSeconds(newTime);
+        }
+
+        function calculateDays(time) {
+            const days = Math.floor(time / (86400 * 1000));
+            return days < 10 ? '0' + days : days;
+        }
+
+        function calculateHours(time) {
+            const hours = time.getHours();
+            return hours < 10 ? '0' + hours : hours;
+        }
+
+        function calculateMinutes(time) {
+            const minutes = time.getMinutes();
+            return minutes < 10 ? '0' + minutes : minutes;
+        }
+
+        function calculateSeconds(time) {
+            const seconds = time.getSeconds();
+            return seconds < 10 ? '0' + seconds : seconds;
+        }
+    </script>
+</body>

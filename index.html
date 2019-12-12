@@ -21,7 +21,7 @@
 
         .clock {
             align-items: center;
-            background-color: purple;
+            background-color: rgb(46, 173, 187);
             border-radius: 50%;
             display: flex;
             height: 8rem;
@@ -31,16 +31,36 @@
             width: 8rem;
         }
 
+        .clock:last-child {
+            margin-right: 0;
+        }
+
         .clock__digit {
             animation-name: fadeIn;
             animation-delay: 1s;
-            animation-duration: .25s;
+            animation-duration: .5s;
             animation-fill-mode: forwards;
             animation-timing-function: ease-in;
             color: #fff;
             font-family: courier, serif;
-            height: 2rem;
-            opacity: 0.2;
+            font-size: 20px;
+            opacity: 0.05;
+        }
+
+        .clock__days .clock__digit {
+            animation-delay: .65s;
+        }
+
+        .clock__hours .clock__digit {
+            animation-delay: .7s;
+        }
+
+        .clock__minutes .clock__digit {
+            animation-delay: .75s;
+        }
+
+        .clock__seconds .clock__digit {
+            animation-delay: .8s;
         }
 
         .clock__label {
@@ -75,9 +95,7 @@
                 <h2 class="text-center">Remaining Time</h2>
                 <div class="countdown-clock">
                     <div class="clock clock__days">
-                        <!--  style="display: none;" -->
-                        <!-- This needs to be expandable? -->
-                        <!-- Do we want to stick with separate digits or one numeric blob for each days/hours/minutes/seconds? -->
+                        <!--  hide maybe? -->
                         <div class="clock__digit">00</div>
                         <div class="clock__label">Days</div>
                     </div>
@@ -135,6 +153,7 @@
 
         // Update visuals
         function updateVisuals() {
+            // TODO to support multiple cloks put a loop here
             const daysDigit    = clockDays[0].getElementsByClassName('clock__digit');
             const hoursDigit   = clockHours[0].getElementsByClassName('clock__digit');
             const minutesDigit = clockMinutes[0].getElementsByClassName('clock__digit');
@@ -148,8 +167,7 @@
         }
 
         function calculateDays(time) {
-            const days = Math.floor(time / (86400 * 1000));
-            return days < 10 ? '0' + days : days;
+            return Math.floor(time / (86400 * 1000));
         }
 
         function calculateHours(time) {

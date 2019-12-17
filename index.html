@@ -7,189 +7,23 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
         integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw=" crossorigin="anonymous" />
 
-    <style>
-        .countdown-clock {
-            align-items: center;
-            background-color: rgba(208, 150, 114, 1);
-            display: flex;
-            height: 40rem;
-            justify-content: center;
-            padding-bottom: 3rem;
-        }
-
-        .clock {
-            align-items: center;
-            background-color: rgba(255, 255, 255);
-            border-radius: 50%;
-            display: flex;
-            height: 8rem;
-            justify-content: center;
-            margin: 0 .5rem;
-            position: relative;
-            width: 8rem;
-
-            animation-name: fadeColor;
-            animation-delay: 1s;
-            animation-duration: .75s;
-            animation-fill-mode: forwards;
-            animation-timing-function: ease-in;
-        }
-
-        .clock:first-child {
-            margin-left: 0;
-        }
-
-        .clock:last-child {
-            margin-right: 0;
-        }
-
-        .clock__digit {
-            color: #fff;
-            font-family: courier, serif;
-            font-size: 20px;
-            transform: scale(.5);
-            user-select: none;
-
-            animation-name: fadeZoom;
-            animation-delay: 1.1s;
-            animation-duration: .25s;
-            animation-fill-mode: forwards;
-            animation-timing-function: ease-in;
-        }
-
-        .clock__label {
-            bottom: -3rem;
-            color: #333;
-            font-size: 12px;
-            font-weight: bold;
-            position: absolute;
-            text-transform: uppercase;
-        }
-
-        @keyframes fadeColor {
-            from {
-                background-color: rgba(208, 150, 114, 1);
-            }
-
-            to {
-                background-color: rgba(145, 25, 205, 1);
-            }
-        }
-
-        @keyframes fadeZoom {
-            from {
-                transform: scale(.5);
-            }
-
-            to {
-                transform: scale(1);
-            }     
-        }
-    </style>
+    <link rel="stylesheet" href="build/css/styles.min.css">
 </head>
 <body>
-<!-- useful things -->
-<!-- https://www.epochconverter.com/ -->
-<!-- https://www.tools4noobs.com/online_tools/seconds_to_hh_mm_ss/ -->
-<!-- https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript -->
+
 
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <br><br><br><br>
-                <h2 class="text-center">Remaining Time</h2>
-                <div class="countdown-clock">
-                    <div class="clock clock__days">
-                        <!--  hide maybe? -->
-                        <div class="clock__digit">00</div>
-                        <div class="clock__label">Days</div>
-                    </div>
-                    <div class="clock clock__hours">
-                        <div class="clock__digit">00</div>
-                        <div class="clock__label">Hours</div>
-                    </div>
-                    <div class="clock clock__minutes">
-                        <div class="clock__digit">00</div>
-                        <div class="clock__label">Minutes</div>
-                    </div>
-                    <div class="clock clock__seconds">
-                        <div class="clock__digit">00</div>
-                        <div class="clock__label">Seconds</div>
-                    </div>
-                </div>
+                <!-- <h2 class="text-center">Remaining Time</h2> -->
+                <!--  hide maybe if no days? probably add a class to each section if there are none left of that type -->
+                <!-- TODO better container to hold sections of time, label, digits, etc. -->
+                <div class="countdown-clock" data-end-time="1577224225"></div>
+                <div class="countdown-clock countdown-clock--flip countdown-clock--blue" data-end-time="1277924225"></div>
             </div>
         </div>
     </div>
 
-
-    <script>
-
-        // TODO
-        // document ready
-        const clocks = document.getElementsByClassName('countdown-clock');
-        const endTimeInSeconds = 1577224225; // TODO get this from DB
-        let currentTimeInSeconds = Math.floor(new Date().getTime() / 1000);
-        let countDownTime = endTimeInSeconds - currentTimeInSeconds;
-        
-        if (countDownTime > 0) {
-            // Set interval to check frequently, not every 1000ms
-            let timer = setInterval(timeCheck, 250);
-        }
-
-        function timeCheck() {
-            currentTimeInSeconds = Math.floor(new Date().getTime() / 1000);
-            countDownTime = endTimeInSeconds - currentTimeInSeconds;
-
-            if (countDownTime < 0) {
-                clearInterval(timer);
-                console.log('You have reached the end.');
-            }
-
-            updateVisuals();
-        }
-
-        // Update visuals
-        function updateVisuals() {
-
-            // Support multilple clocks/timers
-            for (let index = 0; index < clocks.length; index++) {
-                const currentClock = clocks[index];
-                const clockDays    = currentClock.getElementsByClassName('clock__days'); // 0-???
-                const clockHours   = currentClock.getElementsByClassName('clock__hours'); // 0-23
-                const clockMinutes = currentClock.getElementsByClassName('clock__minutes'); // 0-59
-                const clockSeconds = currentClock.getElementsByClassName('clock__seconds'); // 00-59
-                const daysDigit    = clockDays[0].getElementsByClassName('clock__digit');
-                const hoursDigit   = clockHours[0].getElementsByClassName('clock__digit');
-                const minutesDigit = clockMinutes[0].getElementsByClassName('clock__digit');
-                const secondsDigit = clockSeconds[0].getElementsByClassName('clock__digit');
-                const newTime      = new Date(countDownTime * 1000);
-
-                daysDigit[0].innerHTML    = calculateDays(newTime);
-                hoursDigit[0].innerHTML   = calculateHours(newTime);
-                minutesDigit[0].innerHTML = calculateMinutes(newTime);
-                secondsDigit[0].innerHTML = calculateSeconds(newTime);
-            }
-        }
-
-        function calculateDays(time) {
-            return Math.floor(time / (86400 * 1000));
-        }
-
-        function calculateHours(time) {
-            const hours = time.getHours();
-            return hours < 10 ? '0' + hours : hours;
-        }
-
-        function calculateMinutes(time) {
-            const minutes = time.getMinutes();
-            return minutes < 10 ? '0' + minutes : minutes;
-        }
-
-        function calculateSeconds(time) {
-            const seconds = time.getSeconds();
-            return seconds < 10 ? '0' + seconds : seconds;
-        }
-    </script>
+    <script src="build/js/scripts.min.js"></script>
 </body>

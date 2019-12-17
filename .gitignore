@@ -1,0 +1,20 @@
+# Ignored theme files
+*.sass-cache*
+*.log
+
+# Vendor (e.g. Composer)
+vendor/
+!assets/js/vendor/
+
+# Ignore build directory
+build/
+/languages/*.pot
+
+# Node Package Manager
+node_modules
+
+# Mac
+*.DS_Store
+thumbs.db
+.idea
+.env

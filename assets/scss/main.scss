@@ -1,0 +1,98 @@
+.countdown-clock {
+  align-items: center;
+  background-color: rgba(208, 150, 114, 1);
+  display: flex;
+  height: 16rem;
+  justify-content: center;
+  padding-bottom: 3rem;
+
+  &.countdown-clock--blue {
+    background-color: rgba(77, 141, 201, 1);
+  }
+
+  &.countdown-clock--flip {
+    .clock {
+      margin-right: 2rem;
+
+      &:last-child {
+        margin-right: 0;
+
+        &:before,
+        &:after {
+          display: none;
+        }
+      }
+
+      &:before,
+      &:after {
+        background-color: rgba(192, 111, 61, 1);
+        border-radius: 50%;
+        content: '';
+        height: 1rem;
+        position: absolute;
+        right: -1.725rem;
+        width: 1rem;
+      }
+
+      &:before {
+        top: 30%;
+      }
+
+      &:after {
+        bottom: 30%;
+      }
+    }
+  }
+}
+
+.clock {
+  align-items: center;
+  background-color: rgba(192, 111, 61, 1);
+  border-radius: 50%;
+  display: flex;
+  height: 8rem;
+  justify-content: center;
+  margin: 0 .5rem;
+  position: relative;
+  width: 8rem;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.clock__digit {
+  animation-name: fadeColor;
+  animation-delay: 1s;
+  animation-duration: .75s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+  color: #fff;
+  font-family: courier, serif;
+  font-size: 20px;
+  opacity: 0;
+  user-select: none;
+}
+
+.clock__label {
+  bottom: -3rem;
+  color: #333;
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  text-transform: uppercase;
+}
+
+@keyframes fadeColor {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

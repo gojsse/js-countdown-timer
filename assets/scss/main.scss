@@ -1,18 +1,50 @@
+body {
+  font-family: 'Nanum Gothic', sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+}
+
 .countdown-clock {
   align-items: center;
   background-color: rgba(208, 150, 114, 1);
   display: flex;
   height: 16rem;
   justify-content: center;
-  padding-bottom: 3rem;
 
-  &.countdown-clock--blue {
-    background-color: rgba(77, 141, 201, 1);
+  &--label-top {
+    padding-top: 2rem;
+
+    .clock__label {
+      top: -2rem;
+    }
   }
 
-  &.countdown-clock--flip {
+  &--label-bottom {
+    padding-bottom: 2rem;
+
+    .clock__label {
+      bottom: -2rem;
+    }
+  }
+
+  &--charcoal {
+    background-color: rgba(50, 50, 50, 1);
+
+    .clock__label {
+      color: #fff;
+    }
+  }
+
+  &--flip {
+    font-family: 'Slabo 27px', serif;
+
     .clock {
+      background-color: rgba(0, 0, 0, 1);
+      border-radius: 5%;
       margin-right: 2rem;
+      overflow: hidden;
+      position: relative;
 
       &:last-child {
         margin-right: 0;
@@ -25,12 +57,12 @@
 
       &:before,
       &:after {
-        background-color: rgba(192, 111, 61, 1);
+        background-color: rgba(0, 0, 0, 1);
         border-radius: 50%;
         content: '';
         height: 1rem;
         position: absolute;
-        right: -1.725rem;
+        right: -1.5rem;
         width: 1rem;
       }
 
@@ -40,6 +72,53 @@
 
       &:after {
         bottom: 30%;
+      }
+
+      .clock__digit {
+        font-size: 5rem;
+
+        &-value {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+        }
+      }
+
+      .clock__digit-flip {
+        animation: flipCard .075s ease-in-out forwards;
+        border-top-left-radius: 5%;
+        border-top-right-radius: 5%;
+        height: 50%;
+        left: 0;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        transform-origin: 50% 100%;
+        transform: rotateX(0deg);
+        width: 100%;
+
+        span {
+          align-items: center;
+          display: flex;
+          height: 200%;
+          justify-content: center;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
+
+        &-front {
+          background-color: #111;
+          z-index: 2;
+        }
+
+        &-back {
+          background-color: #111;
+          transform-origin: 50% 50%;
+          transform: rotateX(180deg);
+          z-index: 1;
+        }
       }
     }
   }
@@ -52,7 +131,7 @@
   display: flex;
   height: 8rem;
   justify-content: center;
-  margin: 0 .5rem;
+  margin: 0 1rem 0 0;
   position: relative;
   width: 8rem;
 
@@ -66,33 +145,41 @@
 }
 
 .clock__digit {
-  animation-name: fadeColor;
+  animation-name: fadeOpacity;
   animation-delay: 1s;
   animation-duration: .75s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in;
   color: #fff;
-  font-family: courier, serif;
-  font-size: 20px;
+  font-size: 2rem;
   opacity: 0;
   user-select: none;
 }
 
 .clock__label {
-  bottom: -3rem;
   color: #333;
-  font-size: 12px;
+  font-size: 1rem;
   font-weight: bold;
   position: absolute;
   text-transform: uppercase;
 }
 
-@keyframes fadeColor {
+@keyframes fadeOpacity {
   from {
     opacity: 0;
   }
 
   to {
     opacity: 1;
+  }
+}
+
+@keyframes flipCard {
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(180deg);
   }
 }

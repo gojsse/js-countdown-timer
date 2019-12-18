@@ -1,0 +1,156 @@
+$flip-label-color: #fff;
+$flip-digit-separator-color: rgba(0, 0, 0, 1);
+$flip-digit-separator-border-radius: 50%;
+$flip-digit-value-color: #fff;
+$flip-digit-gap-color: rgba(0, 0, 0, 1);
+$flip-digit-bg-color: rgb(40, 34, 154);
+$flip-digit-bg-color-bottom: rgb(40, 34, 154);
+$flip-digit-border-radius: 2rem;
+
+// Flip version of countdown timer
+[data-is-flip-clock='true'] {
+  background-color: rgba(0, 0, 0, 1);
+  font-family: 'Roboto Slab', serif;
+
+  .clock {
+    background-color: $flip-digit-bg-color;
+    border-radius: $flip-digit-border-radius;
+    margin-right: 2rem;
+    position: relative;
+
+    &:last-child {
+      margin-right: 0;
+
+      &:before,
+      &:after {
+        display: none;
+      }
+    }
+
+    // Digit separators
+    &:before,
+    &:after {
+      background-color: $flip-digit-separator-color;
+      border-radius: $flip-digit-separator-border-radius;
+      content: '';
+      height: 1rem;
+      position: absolute;
+      right: -1.5rem;
+      width: 1rem;
+    }
+
+    &:before {
+      top: 30%;
+    }
+
+    &:after {
+      bottom: 30%;
+    }
+
+    &__label {
+      color: $flip-label-color;
+    }
+
+    &__digit {
+      color: $flip-digit-value-color;
+      font-size: 5rem;
+
+      &-value {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    &__digit-gap {
+      position: absolute;
+      width: 100%;
+      background-color: $flip-digit-gap-color;
+      height: .1rem;
+      z-index: 99;
+    }
+
+    &__digit-flip {
+      animation: flipCard .75s cubic-bezier(.95, .05, .4, .75) forwards;
+      height: 50%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      transform-origin: 50% 100%;
+      transform: rotateX(0deg);
+      transform-style: preserve-3d;
+      width: 100%;
+      z-index: 2;
+    }
+
+    &__digit-flip-front,
+    &__digit-flip-back {
+      height: 100%;
+      overflow: hidden;
+      position: absolute;
+      width: 100%;
+
+      div {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        height: 200%;
+        position: absolute;
+        width: 100%;
+
+        background-color: $flip-digit-bg-color-bottom;
+        border-top-left-radius: $flip-digit-border-radius;
+        border-top-right-radius: $flip-digit-border-radius;
+      }
+    }
+
+    &__digit-flip-front {
+
+      // div {
+      //   background-color: $flip-digit-bg-color;
+      // }
+    }
+
+    &__digit-flip-back {
+      transform: rotateX(180deg);
+
+      div {
+        bottom: 0;
+      }
+    }
+
+    &__digit-bottom {
+      background-color: $flip-digit-bg-color-bottom;
+      border-bottom-left-radius: $flip-digit-border-radius;
+      border-bottom-right-radius: $flip-digit-border-radius;
+      height: 50%;
+      left: 0;
+      overflow: hidden;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      z-index: 1;
+
+      div {
+        align-items: center;
+        display: flex;
+        height: 200%;
+        justify-content: center;
+        left: 0;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+      }
+    }
+  }
+}
+
+@keyframes flipCard {
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(180deg);
+  }
+}

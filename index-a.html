@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head id="head">
+	<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+  	<link rel="stylesheet" href="" />
+    <title></title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Slabo+27px&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
+    
+    <style>
+        .box {
+            width: 300px;
+            height: 300px;
+        }
+
+        .flip {
+            font-size: 10rem;
+            position: relative;
+            height: 50%;
+            width: 100%;
+            transform-origin: 50% 100%;
+            transform-style: preserve-3d;
+            transition: all .5s ease-in-out;
+        }
+
+        .flip:hover {
+            transform: rotateX(180deg);
+        }
+
+        .flip__front,
+        .flip__back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            backface-visibility: hidden;
+        }
+
+        .flip__front {
+            background-color: purple;
+        }
+
+        .flip__back {
+            background-color: pink;
+            transform: rotateY(180deg);
+        }
+
+        .flip__front div,
+        .flip__back  div {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            width: 100%;
+            height: 200%;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="flip">
+            <div class="flip__back"><div>B</div></div>
+            <div class="flip__front"><div>F</div></div>
+        </div>
+    </div>
+</body>

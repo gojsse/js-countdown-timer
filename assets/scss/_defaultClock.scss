@@ -1,0 +1,91 @@
+.countdown-clock {
+  align-items: center;
+  background-color: rgba(208, 150, 114, 1);
+  display: flex;
+  height: 16rem;
+  justify-content: center;
+
+  &--label-top {
+    padding-top: 2rem;
+
+    .clock__label {
+      top: -2rem;
+    }
+  }
+
+  &--label-bottom {
+    padding-bottom: 2rem;
+
+    .clock__label {
+      bottom: -2rem;
+    }
+  }
+
+  &--simple {
+    background: url(https://miro.medium.com/max/1200/0*ZmJjaeD5dH036Y5L.jpg) repeat;
+
+    .clock {
+      background-color: transparent;
+      border-radius: 0;
+    }
+
+    .clock__digit {
+      font-size: 3em;
+    }
+
+    .clock__label {
+      bottom: 0;
+      font-weight: bold;
+    }
+  }
+}
+
+.clock {
+  align-items: center;
+  background-color: rgba(192, 111, 61, 1);
+  border-radius: 50%;
+  display: flex;
+  height: 8rem;
+  justify-content: center;
+  margin: 0 1rem 0 0;
+  position: relative;
+  width: 8rem;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.clock__digit {
+  animation-name: fadeOpacity;
+  animation-delay: 1s;
+  animation-duration: .75s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+  color: #fff;
+  font-size: 2rem;
+  opacity: 0;
+  user-select: none;
+}
+
+.clock__label {
+  color: #333;
+  font-size: 1rem;
+  font-weight: bold;
+  position: absolute;
+  text-transform: uppercase;
+}
+
+@keyframes fadeOpacity {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

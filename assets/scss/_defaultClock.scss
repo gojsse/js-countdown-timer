@@ -6,7 +6,10 @@
   justify-content: center;
 
   &--label-top {
-    padding-top: 2rem;
+
+    .clock {
+      margin-top: 2rem;
+    }
 
     .clock__label {
       top: -2rem;
@@ -14,7 +17,10 @@
   }
 
   &--label-bottom {
-    padding-bottom: 2rem;
+
+    .clock {
+      margin-bottom: 2rem;
+    }
 
     .clock__label {
       bottom: -2rem;
@@ -49,7 +55,7 @@
   justify-content: center;
   margin: 0 1rem 0 0;
   position: relative;
-  width: 8rem;
+  min-width: 8rem;
 
   &:first-child {
     margin-left: 0;

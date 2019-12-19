@@ -1,11 +1,11 @@
 $flip-label-color: #fff;
-$flip-digit-separator-color: rgba(0, 0, 0, 1);
+$flip-digit-separator-color: rgb(40, 34, 154);
 $flip-digit-separator-border-radius: 50%;
 $flip-digit-value-color: #fff;
 $flip-digit-gap-color: rgba(0, 0, 0, 1);
 $flip-digit-bg-color: rgb(40, 34, 154);
 $flip-digit-bg-color-bottom: rgb(40, 34, 154);
-$flip-digit-border-radius: 2rem;
+$flip-digit-border-radius: 1rem;
 
 // Flip version of countdown timer
 [data-is-flip-clock='true'] {
@@ -16,6 +16,7 @@ $flip-digit-border-radius: 2rem;
     background-color: $flip-digit-bg-color;
     border-radius: $flip-digit-border-radius;
     margin-right: 2rem;
+    padding: 0 .25rem;
     position: relative;
 
     &:last-child {
@@ -106,9 +107,9 @@ $flip-digit-border-radius: 2rem;
 
     &__digit-flip-front {
 
-      // div {
-      //   background-color: $flip-digit-bg-color;
-      // }
+      div {
+        
+      }
     }
 
     &__digit-flip-back {

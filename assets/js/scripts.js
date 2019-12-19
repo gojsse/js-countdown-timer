@@ -9,39 +9,58 @@ const clocks = document.getElementsByClassName('countdown-clock');
 // Array of clocks and their properties
 const countDownClocks = [];
 
+// Sections of clock
+const sections = [
+  'Days',
+  'Hours',
+  'Minutes',
+  'Seconds'
+];
+
 // Setup each clock
 for (let index = 0; index < clocks.length; index++) {
-  // Get end-time data attribute value for this clock
-  // TODO make sure the endtime dataset exists before continuing...continue if not and console log error
-  const currentTimeSeconds   = Math.floor(new Date().getTime() / 1000);
-  const endTimeSeconds       = parseInt(clocks[index].dataset.endTime, 10);
-  const remainingSeconds     = endTimeSeconds - currentTimeSeconds;
-  const remainingTimeSeconds = new Date(remainingSeconds);
-  const flipAttribute        = clocks[index].dataset.hasOwnProperty('isFlipClock') ? true : false;
 
-  // if (remainingSeconds < 0) {
-  //     console.log('clock endtime older than present or error.');
-  //     continue;
-  // }
+  // Clock element must have end-time data attribute
+  if (!clocks[index].dataset.hasOwnProperty('endTime')) {
+    console.log('clock element is missing data-end-time attribute or value');
+    continue;
+  }
+
+  const clockEndTime       = parseInt(clocks[index].dataset.endTime, 10);
+  const currentTimeSeconds = Math.floor(new Date().getTime() / 1000);
+  const remainingSeconds   = clockEndTime - currentTimeSeconds;
+
+  console.log(remainingSeconds); //2 days 23:39:33.
+
+  const remainingTime      = new Date(remainingSeconds * 1000);
+  const flipAttribute      = clocks[index].dataset.hasOwnProperty('isFlipClock') ? true : false;
+
+  // TODO do clock complete check here...
+  if (remainingSeconds < 0) {
+    endClock(index);
+    continue;
+  }
 
   // Setup clock data
   countDownClocks[index] = {
-    endTimeSeconds:          endTimeSeconds,
+    endTimeSeconds:          clockEndTime,
     remainingSeconds:        remainingSeconds,
     isFlip:                  flipAttribute,
-    currentDays:             Math.floor(remainingSeconds / (86400 * 1000)),
-    currentHours:            remainingTimeSeconds.getHours(),
-    currentMinutes:          remainingTimeSeconds.getMinutes(),
-    currentSeconds:          remainingTimeSeconds.getSeconds(),
+    currentDays:             Math.floor(remainingSeconds / (24 * 60 *  60)),
+    currentHours:            remainingTime.getHours(),
+    currentMinutes:          remainingTime.getMinutes(),
+    currentSeconds:          remainingTime.getSeconds(),
     currentDaysFormatted:    this.currentDays,
-    currentHoursFormatted:   '22',
-    currentMinutesFormatted: '00',
-    currentSecondsFormatted: '00',
+    currentHoursFormatted:   formatTime(this.currentHours),
+    currentMinutesFormatted: formatTime(this.currentMinutes),
+    currentSecondsFormatted: formatTime(this.currentSeconds),
     setInterval:             setInterval(checkTime, 100, index)
   };
 
   buildClockHTML(index);
 }
+
+console.log(countDownClocks);
 
 /**
  * Check remaining time and if any remains, run calculations on clock
@@ -49,150 +68,100 @@ for (let index = 0; index < clocks.length; index++) {
  * @param {int} clockIndex (index of clock on page)
  */
 function checkTime(clockIndex) {
+  const remainingTime = getRemainingTime(clockIndex);
+
+  // if (remainingTime < new Date()) {
+  //   console.log('end the time for whatever reason');
+  //   endClock(clockIndex);
+  //   return;
+  // }
+
+  sections.forEach(sectionName => {
+    let sectionTimeValue;
+    // const hasSectionTimeLeft;
+
+    switch (sectionName) {
+      case 'Days':
+        const currentTimeSeconds = Math.floor(new Date().getTime() / 1000);
+        const remainingSeconds   = countDownClocks[clockIndex].endTimeSeconds - currentTimeSeconds;
+        sectionTimeValue = Math.floor(remainingSeconds / (24 * 60 * 60));
+        // hasSectionTimeLeft   = remainingSectionTime > 0 ? true : false;
+        break;
+      case 'Hours':
+        sectionTimeValue = remainingTime.getHours();
+        // hasSectionTimeLeft   = Math.floor(remainingTime / 360) > 0 ? true : false;
+        break;
+      case 'Minutes':
+        sectionTimeValue = remainingTime.getMinutes();
+        // hasSectionTimeLeft   = Math.floor(remainingSectionTime / 60) > 0 ? true : false;
+        break;
+      case 'Seconds':
+        sectionTimeValue = remainingTime.getSeconds();
+        // hasSectionTimeLeft   = remainingTime > 0 ? true : false;
+        break;
+      default:
+        break;
+    }
+
+    processTimeSection(clockIndex, sectionName, sectionTimeValue);
+  });
+}
+
+/**
+ * Computes a digits next value, handles some dom behaviors
+ *
+ * @param {int} clockIndex (index of clock on page)
+ * @param {string} sectionName (clock section name such as 'Minutes')
+ * @param {int} sectionTimeValue (section time value)
+ */
+function processTimeSection(clockIndex, sectionName, sectionTimeValue) {
+  const sectionNameLower     = sectionName.toLowerCase();
+  const countDownClock       = countDownClocks[clockIndex];
+  const domClock             = clocks[clockIndex];
+  const domClockSection      = domClock.getElementsByClassName('clock__' + sectionNameLower);
+  const domClockSectionDigit = domClockSection[0].getElementsByClassName('clock__digit-value');
+  const sectionIndex         = sections.indexOf(sectionName);
+
+  if (countDownClock['current' + sectionName] !== sectionTimeValue) {
+    const newValue = formatTime(sectionTimeValue);
+    const oldValue = countDownClock['current' + sectionName + 'Formatted'];
+
+    // Update DOM
+    flipThisDigit(clockIndex, sectionIndex, oldValue, newValue);
+    domClockSectionDigit[0].innerHTML = sectionTimeValue;
+
+    // Store new data
+    countDownClock['current' + sectionName] = sectionTimeValue;
+    countDownClock['current' + sectionName + 'Formatted'] = newValue;
+  }
+
+  // if (!hasDaysLeft) {
+  //   daysDigit[0].innerHTML = '0';
+  //   clockDays[0].classList.add('clock__days--complete');
+  //   countDownClocks[clockIndex].hoursComplete = true;
+  // }
+}
+
+/**
+ * Gets a clock's remaining time
+ *
+ * @param {int} clockIndex (index of clock on page)
+ */
+function getRemainingTime(clockIndex) {
   const currentTimeSeconds = Math.floor(new Date().getTime() / 1000);
-  const endTimeSeconds     = parseInt(clocks[clockIndex].dataset.endTime, 10);
-  const remainingSeconds   = endTimeSeconds - currentTimeSeconds;
+  const remainingSeconds   = countDownClocks[clockIndex].endTimeSeconds - currentTimeSeconds;
 
-  if (remainingSeconds < 0) {
-    console.log('end the time for whatever reason');
-    endClock(clockIndex);
-    return;
-  }
-
-  const remainingTimeSeconds = new Date(remainingSeconds * 1000);
-
-  formatDays(clockIndex, remainingTimeSeconds);
-  formatHours(clockIndex, remainingTimeSeconds);
-  formatMinutes(clockIndex, remainingTimeSeconds);
-  formatSeconds(clockIndex, remainingTimeSeconds);
+  return new Date(remainingSeconds * 1000);
 }
 
 /**
- * Handles behaviors of the clock days
+ * Formats single digit values to double
  *
- * @param {int} clockIndex (index of clock on page)
- * @param {int} remainingTimeSeconds (remaining seconds)
+ * @param {int} value (original value)
+ * @return {int|string} (modified value)
  */
-function formatDays(clockIndex, remainingTimeSeconds) {
-  const days        = Math.floor(remainingTimeSeconds / (86400 * 1000));
-  const hasDaysLeft = days > 0 ? true : false;
-  const clockDays   = clocks[clockIndex].getElementsByClassName('clock__days');
-  const daysDigit   = clockDays[0].getElementsByClassName('clock__digit-value');
-
-  if (hasDaysLeft && countDownClocks[clockIndex].currentDays !== days) {
-    const newValue = days;
-    const oldValue = countDownClocks[clockIndex].currentDaysFormatted;
-
-    // Update DOM
-    doFlipBehaviors(clockIndex, 2, oldValue, newValue);
-    daysDigit[0].innerHTML = days;
-
-    // Store new data
-    countDownClocks[clockIndex].currentDays = days;
-    countDownClocks[clockIndex].currentDaysFormatted = newValue;
-  }
-
-  if (!hasDaysLeft) {
-    daysDigit[0].innerHTML = '0';
-    clockDays[0].classList.add('clock__days--complete');
-    countDownClocks[clockIndex].hoursComplete = true;
-  }
-}
-
-/**
- * Handles behaviors of the clock hours
- *
- * @param {int} clockIndex (index of clock on page)
- * @param {int} remainingTimeSeconds (remaining seconds)
- */
-function formatHours(clockIndex, remainingTimeSeconds) {
-  const hours        = remainingTimeSeconds.getHours();
-  const hasHoursLeft = Math.floor(remainingTimeSeconds / 360) > 0 ? true : false;
-  const clockHours   = clocks[clockIndex].getElementsByClassName('clock__hours');
-  const hoursDigit   = clockHours[0].getElementsByClassName('clock__digit-value');
-
-  if (hasHoursLeft && countDownClocks[clockIndex].currentHours !== hours) {
-    const newValue = hours < 10 ? '0' + hours : hours;
-    const oldValue = countDownClocks[clockIndex].currentHoursFormatted;
-
-    // Update DOM
-    doFlipBehaviors(clockIndex, 2, oldValue, newValue);
-    hoursDigit[0].innerHTML = newValue;
-
-    // Store new data
-    countDownClocks[clockIndex].currentHours = hours;
-    countDownClocks[clockIndex].currentHoursFormatted = newValue;
-  }
-
-  if (!hasHoursLeft) {
-    console.log('no hours left');
-    hoursDigit[0].innerHTML = '00';
-    clockHours[0].classList.add('clock__hours--complete');
-  }
-}
-
-/**
- * Handles behaviors of the clock minutes
- *
- * @param {int} clockIndex (index of clock on page)
- * @param {int} remainingTimeSeconds (remaining seconds)
- */
-function formatMinutes(clockIndex, remainingTimeSeconds) {
-  const minutes        = remainingTimeSeconds.getMinutes();
-  // TODO calculation is not true possibly due to fractions. add - Math.floor() ?
-  const hasMinutesLeft = remainingTimeSeconds / 60 > 0 ? true : false;
-  const clockMinutes   = clocks[clockIndex].getElementsByClassName('clock__minutes');
-  const minutesDigit   = clockMinutes[0].getElementsByClassName('clock__digit-value');
-
-  if (hasMinutesLeft && countDownClocks[clockIndex].currentMinutes !== minutes) {
-    const newValue = minutes < 10 ? '0' + minutes : minutes;
-    const oldValue = countDownClocks[clockIndex].currentMinutesFormatted;
-
-    // Update DOM
-    doFlipBehaviors(clockIndex, 2, oldValue, newValue);
-    minutesDigit[0].innerHTML = newValue;
-
-    // Store new data
-    countDownClocks[clockIndex].currentMinutes = minutes;
-    countDownClocks[clockIndex].currentMinutesFormatted = newValue;
-  }
-
-  if (!hasMinutesLeft) {
-    minutesDigit[0].innerHTML = '00';
-    clockMinutes[0].classList.add('clock__minutes--complete');
-  }
-}
-
-/**
- * Handles behaviors of the clock seconds
- *
- * @param {int} clockIndex (index of clock on page)
- * @param {int} remainingTimeSeconds (remaining seconds)
- */
-function formatSeconds(clockIndex, remainingTimeSeconds) {
-  const clock          = countDownClocks[clockIndex];
-  const clockSeconds   = clocks[clockIndex].getElementsByClassName('clock__seconds');
-  const secondsDigit   = clockSeconds[0].getElementsByClassName('clock__digit-value');
-  const seconds        = remainingTimeSeconds.getSeconds();
-  const hasSecondsLeft = remainingTimeSeconds > 0 ? true : false;
-
-  if (hasSecondsLeft && clock.currentSeconds !== seconds) {
-    const oldValue = clock.currentSecondsFormatted;
-    const newValue = seconds < 10 ? '0' + seconds : seconds;
-
-    // Update DOM
-    doFlipBehaviors(clockIndex, 3, oldValue, newValue);
-    secondsDigit[0].innerHTML = newValue;
-
-    // Store new data
-    clock.currentSeconds = seconds;
-    clock.currentSecondsFormatted = newValue;
-  }
-
-  if (!hasSecondsLeft) {
-    secondsDigit[0].innerHTML = '00';
-    clockSeconds[0].classList.add('clock__seconds--complete');
-  }
+function formatTime(value) {
+  return value < 10 ? '0' + value : value;
 }
 
 /**
@@ -203,7 +172,7 @@ function formatSeconds(clockIndex, remainingTimeSeconds) {
  * @param {int} oldValue (old time value)
  * @param {int} newValue (new time value)
  */
-function doFlipBehaviors(clockIndex, digitIndex, oldValue, newValue) {
+function flipThisDigit(clockIndex, digitIndex, oldValue, newValue) {
 
   if (countDownClocks[clockIndex].isFlip !== true) {
     return;
@@ -232,23 +201,16 @@ function doFlipBehaviors(clockIndex, digitIndex, oldValue, newValue) {
 }
 
 /**
- * Builds a clock's HTML
+ * Builds a clock's HTML and sets initial values to markup
  *
- * @param {int} index (dom element index)
+ * @param {int} clockIndex (index of clock on page)
  */
-function buildClockHTML(index) {
-  const clockElement = clocks[index];
+function buildClockHTML(clockIndex) {
+  const clockElement = clocks[clockIndex];
   const isFlipClock  = clockElement.dataset.hasOwnProperty('isFlipClock') ? true : false;
 
-  const sections = [
-    'Days',
-    'Hours',
-    'Minutes',
-    'Seconds'
-  ];
-
   sections.forEach(sectionName => {
-    const timePropertyValue = countDownClocks[index]['current' + sectionName];
+    const timePropertyValue = countDownClocks[clockIndex]['current' + sectionName];
     const flipBottomElement = isFlipClock ? `<div class="clock__digit-bottom"><div>${timePropertyValue}</div></div>` : '';
     const className         = sectionName.toLowerCase();
     const newElement        = document.createElement('div');
@@ -273,7 +235,8 @@ function buildClockHTML(index) {
  * @param {int} clockIndex (index of clock on page)
  */
 function endClock(clockIndex) {
-  clearInterval(countDownClocks[clockIndex].setInterval);
+  // clearInterval(countDownClocks[clockIndex].setInterval);
   console.log('end of time for this clock -> ');
   console.log(clockIndex);
+  clocks[clockIndex].innerHTML = "completed";
 }

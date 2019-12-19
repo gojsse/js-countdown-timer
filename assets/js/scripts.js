@@ -214,7 +214,7 @@ function setupClocks() {
 
     buildClockHTML(index);
 
-    countDownClocks[index].setInterval = setInterval(checkTime, 200, index);
+    countDownClocks[index].setInterval = setInterval(checkTime, 100, index);
   }
 }
 

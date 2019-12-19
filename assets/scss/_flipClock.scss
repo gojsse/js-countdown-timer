@@ -28,7 +28,7 @@ $flip-digit-border-radius: 1rem;
       }
     }
 
-    // Digit separators
+    // Digit separator
     &:before,
     &:after {
       background-color: $flip-digit-separator-color;
@@ -68,11 +68,11 @@ $flip-digit-border-radius: 1rem;
       width: 100%;
       background-color: $flip-digit-gap-color;
       height: .1rem;
-      z-index: 99;
+      z-index: 1;
     }
 
     &__digit-flip {
-      animation: flipCard .75s cubic-bezier(.95, .05, .4, .75) forwards;
+      animation: flipCard .25s cubic-bezier(.95, .05, .4, .75) forwards;
       height: 50%;
       left: 0;
       position: absolute;
@@ -100,8 +100,7 @@ $flip-digit-border-radius: 1rem;
         width: 100%;
 
         background-color: $flip-digit-bg-color-bottom;
-        border-top-left-radius: $flip-digit-border-radius;
-        border-top-right-radius: $flip-digit-border-radius;
+        border-radius: $flip-digit-border-radius;
       }
     }
 

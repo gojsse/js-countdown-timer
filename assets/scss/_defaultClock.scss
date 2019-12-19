@@ -28,7 +28,7 @@
   }
 
   &--simple {
-    background: url(https://miro.medium.com/max/1200/0*ZmJjaeD5dH036Y5L.jpg) repeat;
+    background: url('https://www.toptal.com/designers/subtlepatterns/patterns/grey_wash_wall.png') repeat;
 
     .clock {
       background-color: transparent;
@@ -44,6 +44,13 @@
       font-weight: bold;
     }
   }
+
+  &--complete {
+
+    .clock {
+      opacity: .5;
+    }
+  }
 }
 
 .clock {
@@ -54,8 +61,10 @@
   height: 8rem;
   justify-content: center;
   margin: 0 1rem 0 0;
-  position: relative;
   min-width: 8rem;
+  opacity: 1;
+  position: relative;
+  transition: all 1s ease-in-out;
 
   &:first-child {
     margin-left: 0;

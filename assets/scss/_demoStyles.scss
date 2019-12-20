@@ -1,0 +1,85 @@
+// Demo styles
+$background-color-2: #e9a8c6;
+$background-color-3: #000000;
+$background-color-4: #6d809b;
+
+.style--1 {
+  background-color: none;
+  background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/what-the-hex.png');
+  background-repeat: repeat;
+}
+
+.style--2 {
+  background-color: $background-color-2;
+}
+
+.style--3 {
+  background-color: $background-color-3;
+  padding-bottom: 2.5rem;
+}
+
+.style--4 {
+  background-color: none;
+  background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/random_grey_variations.png');
+  background-repeat: repeat;
+
+  &[data-is-flip-clock='true'] {
+    font-family: 'Poiret One', cursive;
+
+    .clock {
+      background-color: $background-color-4;
+      border-radius: 0;
+      box-shadow: 0 .1rem 0 rgba(0, 0, 0, .5);
+      margin-left: 1rem;
+      margin-right: 1rem;
+      width: 5rem;
+
+      &__digit-gap {
+        background-color: rgba(0, 0, 0, .5);
+        height: .175rem;
+        opacity: .5;
+
+        &:before,
+        &:after {
+          content: '';
+          height: 1px;
+          position: absolute;
+          width: 100%;
+        }
+
+        &:before {
+          background-color: rgba(0, 0, 0, .85);
+          top: 0;
+        }
+
+        &:after {
+          background-color: rgba(255, 255, 255, .75);
+          bottom: 0;
+        }
+      }
+
+      &__digit,
+      &__digit-bottom {
+        background-color: $background-color-4;
+        border-radius: 0;
+        font-size: 3rem;
+      }
+
+      &__digit-flip-back,
+      &__digit-flip-front {
+  
+        div {
+          background-color: $background-color-4;
+          border-radius: 0;
+        }
+      }
+
+      &__digit-separator {
+
+        span {
+          border-radius: 0;
+        }
+      }
+    }
+  }
+}

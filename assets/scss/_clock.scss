@@ -1,8 +1,8 @@
 .countdown-clock {
   align-items: center;
-  background-color: rgba(208, 150, 114, 1);
   display: flex;
-  height: 16rem;
+  min-height: 8rem;
+  padding: 2rem 0;
   justify-content: center;
 
   &--label-top {
@@ -27,24 +27,6 @@
     }
   }
 
-  &--simple {
-    background: url('https://www.toptal.com/designers/subtlepatterns/patterns/grey_wash_wall.png') repeat;
-
-    .clock {
-      background-color: transparent;
-      border-radius: 0;
-    }
-
-    .clock__digit {
-      font-size: 3em;
-    }
-
-    .clock__label {
-      bottom: 0;
-      font-weight: bold;
-    }
-  }
-
   &--complete {
 
     .clock {
@@ -55,23 +37,44 @@
 
 .clock {
   align-items: center;
-  background-color: rgba(192, 111, 61, 1);
-  border-radius: 50%;
   display: flex;
-  height: 8rem;
+  height: 4rem;
   justify-content: center;
-  margin: 0 1rem 0 0;
-  min-width: 8rem;
+  margin: 0 .25rem;
+  min-width: 6rem;
   opacity: 1;
   position: relative;
   transition: all 1s ease-in-out;
 
-  &:first-child {
-    margin-left: 0;
-  }
+  &__digit-separator {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
-  &:last-child {
-    margin-right: 0;
+    span {
+      background-color: #000;
+      border-radius: 50%;
+      display: block;
+      height: .5rem;
+      width: .5rem;
+
+      &:first-child {
+        margin: 30% 0;
+      }
+
+      &:last-child {
+        margin: 30% 0;
+      }
+    }
+
+    .countdown-clock--label-top & {
+      margin-top: 2rem;
+    }
+
+    .countdown-clock--label-bottom & {
+      margin-bottom: 2rem;
+    }
   }
 }
 
@@ -81,15 +84,15 @@
   animation-duration: .75s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in;
-  color: #fff;
-  font-size: 2rem;
+  color: #000;
+  font-size: 3em;
   opacity: 0;
   user-select: none;
 }
 
 .clock__label {
-  color: #333;
-  font-size: 1rem;
+  color: rgba(0, 0, 0, .75);
+  font-size: 1em;
   font-weight: bold;
   position: absolute;
   text-transform: uppercase;

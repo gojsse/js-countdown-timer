@@ -1,52 +1,21 @@
 $flip-label-color: #fff;
-$flip-digit-separator-color: rgb(40, 34, 154);
-$flip-digit-separator-border-radius: 50%;
+$flip-digit-separator-color: #666;
 $flip-digit-value-color: #fff;
-$flip-digit-gap-color: rgba(0, 0, 0, 1);
-$flip-digit-bg-color: rgb(40, 34, 154);
-$flip-digit-bg-color-bottom: rgb(40, 34, 154);
+$flip-digit-gap-color: #444;
+$flip-digit-bg-color: #666;
 $flip-digit-border-radius: 1rem;
 
 // Flip version of countdown timer
 [data-is-flip-clock='true'] {
-  background-color: rgba(0, 0, 0, 1);
   font-family: 'Roboto Slab', serif;
 
   .clock {
     background-color: $flip-digit-bg-color;
     border-radius: $flip-digit-border-radius;
-    margin-right: 2rem;
-    padding: 0 .25rem;
+    height: 8em;
+    padding: 0 .25em;
     position: relative;
-
-    &:last-child {
-      margin-right: 0;
-
-      &:before,
-      &:after {
-        display: none;
-      }
-    }
-
-    // Digit separator
-    &:before,
-    &:after {
-      background-color: $flip-digit-separator-color;
-      border-radius: $flip-digit-separator-border-radius;
-      content: '';
-      height: 1rem;
-      position: absolute;
-      right: -1.5rem;
-      width: 1rem;
-    }
-
-    &:before {
-      top: 30%;
-    }
-
-    &:after {
-      bottom: 30%;
-    }
+    width: 8em;
 
     &__label {
       color: $flip-label-color;
@@ -55,12 +24,6 @@ $flip-digit-border-radius: 1rem;
     &__digit {
       color: $flip-digit-value-color;
       font-size: 5rem;
-
-      &-value {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-      }
     }
 
     &__digit-gap {
@@ -93,21 +56,13 @@ $flip-digit-border-radius: 1rem;
 
       div {
         align-items: center;
+        background-color: $flip-digit-bg-color;
+        border-radius: $flip-digit-border-radius;
         display: flex;
         justify-content: center;
         height: 200%;
         position: absolute;
         width: 100%;
-
-        background-color: $flip-digit-bg-color-bottom;
-        border-radius: $flip-digit-border-radius;
-      }
-    }
-
-    &__digit-flip-front {
-
-      div {
-        
       }
     }
 
@@ -120,7 +75,7 @@ $flip-digit-border-radius: 1rem;
     }
 
     &__digit-bottom {
-      background-color: $flip-digit-bg-color-bottom;
+      background-color: $flip-digit-bg-color;
       border-bottom-left-radius: $flip-digit-border-radius;
       border-bottom-right-radius: $flip-digit-border-radius;
       height: 50%;
@@ -140,6 +95,17 @@ $flip-digit-border-radius: 1rem;
         position: absolute;
         bottom: 0;
         width: 100%;
+      }
+    }
+
+    &__digit-separator {
+  
+      span {
+        background-color: $flip-digit-separator-color;
+        border-radius: 50%;
+        height: 1rem;
+        width: 1rem;
+
       }
     }
   }

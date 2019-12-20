@@ -5,5 +5,7 @@ body {
   padding: 0;
 }
 
-@import 'defaultClock';
-@import 'flipClock';
+@import 'clock';
+@import 'clockDiscs';
+@import 'clockFlip';
+@import 'demoStyles';

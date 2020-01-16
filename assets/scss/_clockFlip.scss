@@ -3,7 +3,7 @@ $flip-digit-separator-color: #666;
 $flip-digit-value-color: #fff;
 $flip-digit-gap-color: #444;
 $flip-digit-bg-color: #666;
-$flip-digit-border-radius: 1rem;
+$flip-digit-border-radius: 1em;
 
 // Flip version of countdown timer
 [data-is-flip-clock='true'] {
@@ -15,7 +15,7 @@ $flip-digit-border-radius: 1rem;
     height: 8em;
     padding: 0 .25em;
     position: relative;
-    width: 8em;
+    min-width: 8em;
 
     &__label {
       color: $flip-label-color;
@@ -23,14 +23,14 @@ $flip-digit-border-radius: 1rem;
 
     &__digit {
       color: $flip-digit-value-color;
-      font-size: 5rem;
+      font-size: 5em;
     }
 
     &__digit-gap {
       position: absolute;
       width: 100%;
       background-color: $flip-digit-gap-color;
-      height: .1rem;
+      height: .1em;
       z-index: 1;
     }
 
@@ -103,8 +103,8 @@ $flip-digit-border-radius: 1rem;
       span {
         background-color: $flip-digit-separator-color;
         border-radius: 50%;
-        height: 1rem;
-        width: 1rem;
+        height: 1em;
+        width: 1em;
 
       }
     }

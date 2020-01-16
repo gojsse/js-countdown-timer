@@ -1,0 +1,42 @@
+/*********************
+COLORS
+*********************/
+$black: #000000;
+$white: #ffffff;
+
+$black-20: rgba($black, .2);
+$black-40: rgba($black, .4);
+$black-60: rgba($black, .6);
+$black-80: rgba($black, .8);
+$white-20: rgba($white, .2);
+$white-30: rgba($white, .3);
+$white-40: rgba($white, .4);
+$white-70: rgba($white, .7);
+$white-80: rgba($white, .8);
+
+/*********************
+BREAKPOINTS
+*********************/
+// $breakpoint-xs: 480px;
+$breakpoint-sm: 720px;
+$breakpoint-md: 990px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1440px;
+
+@mixin breakpoint($point) {
+  @if $point == desktop-xl {
+    @media (min-width: $breakpoint-xl) { @content ; }
+  }
+  @else if $point == desktop {
+    @media (min-width: $breakpoint-lg) { @content ; }
+  }
+  @else if $point == tablet {
+    @media (min-width: $breakpoint-md) { @content ; }
+  }
+  @else if $point == mobile {
+    @media (min-width: $breakpoint-sm)  { @content ; }
+  }
+  // @else if $point == mobile-xs {
+  //   @media (min-width: $breakpoint-xs)  { @content ; }
+  // }
+}

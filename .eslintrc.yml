@@ -5,7 +5,7 @@ env:
   node: true
 
 rules:
-  indent: ["error", 2, {"SwitchCase": 1}]
+  indent: ["error", 2]
   brace-style: [2, "1tbs"]
   comma-style: [1, "last"]
   default-case: 2
@@ -39,7 +39,7 @@ rules:
   no-unreachable: 2
   eol-last: 1
   operator-linebreak: [1, "before", {overrides: {"?": "after", ":": "after"}}]
-  max-len: [1, 140, 4, {"ignoreComments": true}]
+  max-len: [1, 98, 4, {"ignoreComments": true}]
   no-multi-str: 1
   no-mixed-spaces-and-tabs: 1
   no-trailing-spaces: 1

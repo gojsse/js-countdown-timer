@@ -167,14 +167,12 @@ function buildClockHTML(clockIndex) {
   const clockElement = clocks[clockIndex];
   const isFlipClock  = clockElement.dataset.hasOwnProperty('isFlipClock') ? true : false;
 
-  console.log(sections.length);
-
   sections.forEach((sectionName, index) => {
     const leadingZeros        = sectionName !== 'Days' ? 1 : 0;
     const timePropertyValue   = formatTime(countDownClocks[clockIndex]['current' + sectionName], leadingZeros);
 
     // Add digit element
-    const flipBottomElement   = isFlipClock ? `<div class="clock__digit-bottom"><div>${timePropertyValue}</div></div>` : '';
+    const flipBottomElement   = isFlipClock ? '<div class="clock__digit-bottom"><div>${timePropertyValue}</div></div>' : '';
     const digitElement        = document.createElement('div');
     const digitElementContent = `
         <div class="clock__digit">

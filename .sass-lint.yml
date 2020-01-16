@@ -30,7 +30,7 @@ rules:
     - 1
     - convention: zero
   brace-style:
-    - 0
+    - 1
     - style: stroustrup
     - allow-single-line: true
   class-name-format:
@@ -55,6 +55,12 @@ rules:
     - 1
     - allow-leading-underscore: true
       convention: hyphenatedlowercase
+  hex-length:
+    - 1
+    - style: short
+  hex-notation:
+    - 1
+    - style: lowercase
   id-name-format:
     - 0
     - convention: hyphenatedlowercase
@@ -74,7 +80,7 @@ rules:
     - max-depth: 4
   no-color-keywords: 1
   no-color-literals: 0
-  no-css-comments: 0
+  no-css-comments: 1
   no-debug: 1
   no-duplicate-properties: 1
   no-empty-rulesets: 1
@@ -93,7 +99,7 @@ rules:
       allow-element-with-id: false
   no-trailing-zero: 1
   no-transition-all: 0
-  no-url-protocols: 0
+  no-url-protocols: 1
   no-vendor-prefixes:
     - 1
     - additional-identifiers: []

@@ -2,14 +2,17 @@
 
 // Load plugins
 const gulp         = require('gulp');
-const concat       = require("gulp-concat");
-const rename       = require("gulp-rename");
-const terser       = require('gulp-terser');
-const sourcemaps   = require("gulp-sourcemaps");
 const autoprefixer = require("gulp-autoprefixer");
 const sass         = require("gulp-sass");
 const sassLint     = require('gulp-sass-lint');
-const eslint       = require("gulp-eslint");
+const rename       = require("gulp-rename");
+const sourcemaps   = require("gulp-sourcemaps");
+const buffer       = require('vinyl-buffer');
+const source       = require('vinyl-source-stream');
+const rollup       = require('rollup-stream');
+const uglify       = require('rollup-plugin-uglify-es');
+const babel        = require('rollup-plugin-babel');
+const { eslint }   = require('rollup-plugin-eslint');
 
 // File paths to various assets are defined here.
 const PATHS = {
@@ -17,64 +20,45 @@ const PATHS = {
     'assets/scss/*.scss',
     'assets/scss/**/*.scss'
   ],
-  jsVendor: [
-    'assets/js/vendor/*.js'
-  ],
   jsProject: [
-    'assets/js/scripts/*.js',
-    'assets/js/scripts.js'
+    'assets/js/*.js'
   ]
 };
 
-// Concatenate & Minify all bower dependency javascript files
-function buildScriptsVendor() {
-  return (
-    gulp
-      .src(PATHS.jsVendor)
-      .pipe(concat('vendor.js'))
-      .pipe(rename({
-        suffix: '.min'
-      }))
-      .pipe(terser())
-      .pipe(gulp.dest('build/js'))
-  );
-}
+const rollupJS = (inputFile, options) => {
+  return rollup({
+    input: options.basePath + inputFile,
+    format: options.format,
+    sourcemap: options.sourcemap,
+    plugins: options.plugins
+  })
+  // point to the entry file.
+  .pipe(source(inputFile, options.basePath))
+  // we need to buffer the output, since many gulp plugins don't support streams.
+  .pipe(buffer())
+  .pipe(sourcemaps.init({loadMaps: true}))
+  // some transformations like uglify, rename, etc.
+  .pipe(sourcemaps.write('.'))
+  .pipe(gulp.dest(options.distPath));
+};
 
 // Concatenate & Minify all project javascript files
-function buildScriptsProject() {
-  return (
-    gulp
-      .src(PATHS.jsProject)
-      .pipe(concat('scripts.js'))
-      .pipe(rename({
-        suffix: '.min'
-      }))
-      .pipe(terser())
-      .pipe(gulp.dest('build/js'))
-  );
-}
-
-// Concatenate all project javascript files
-function devScriptsProject() {
-  return (
-    gulp
-      .src(PATHS.jsProject)
-      .pipe(concat('scripts.js'))
-      .pipe(gulp.dest('build/js'))
-  );
-}
-
-// run JS lint on project scripts
-function scriptsLint() {
-  return gulp
-    .src(PATHS.jsProject)
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+const buildScripts = function () {
+  return rollupJS('scripts.js', {
+    basePath: './assets/js/',
+    format: 'es',
+    distPath: './build/js',
+    sourcemap: true,
+    plugins: [
+      eslint(),
+      babel({ exclude: 'node_modules/**' }),
+      uglify()
+    ]
+  });
 }
 
 // Compile min CSS
-function buildStyles() {
+const buildStyles = function() {
   return (
     gulp
       .src('assets/scss/main.scss')
@@ -93,8 +77,8 @@ function buildStyles() {
   );
 }
 
-// run SCSS lint on project styles
-function stylesLint() {
+// Run SCSS lint on project styles
+const stylesLint = function() {
   return (
     gulp
       .src(PATHS.sass)
@@ -105,32 +89,18 @@ function stylesLint() {
 }
 
 // Watch files
-function watchDevFiles() {
+const watchFiles = function() {
   gulp.watch(PATHS.sass, gulp.series(stylesLint, buildStyles));
-  gulp.watch(PATHS.jsProject, gulp.series(scriptsLint, devScriptsProject));
+  gulp.watch(PATHS.jsProject, buildScripts);
 }
 
-// Watch files
-function watchFiles() {
-  gulp.watch(PATHS.sass, gulp.series(stylesLint, buildStyles));
-  gulp.watch(PATHS.jsProject, gulp.series(scriptsLint, buildScriptsProject));
-}
+// Define complex tasks
+const build = gulp.series(stylesLint, buildStyles, buildScripts);
 
-// define complex tasks
-const js    = gulp.series(scriptsLint, gulp.parallel(buildScriptsProject, buildScriptsVendor));
-const build = gulp.series(scriptsLint, stylesLint, gulp.parallel(buildScriptsVendor, buildScriptsProject, buildStyles));
-const dev   = gulp.series(scriptsLint, stylesLint, gulp.parallel(buildScriptsVendor, devScriptsProject, buildStyles));
-
-// export tasks
-exports.vendor      = buildScriptsVendor;
-exports.project     = buildScriptsProject;
-exports.projectDev  = devScriptsProject;
-exports.styles      = buildStyles;
-exports.scriptsLint = scriptsLint;
-exports.sassLint    = stylesLint;
-exports.watchDev    = watchDevFiles;
-exports.watch       = watchFiles;
-exports.js          = js;
-exports.build       = build;
-exports.dev         = dev;
-exports.default     = build;
+// Export tasks
+exports.project  = buildScripts;
+exports.styles   = buildStyles;
+exports.sassLint = stylesLint;
+exports.watch    = watchFiles;
+exports.build    = build;
+exports.default  = build;

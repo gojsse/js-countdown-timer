@@ -1,5 +1,3 @@
-// REFACTOR: https://github.com/ModernClimate/jcc-pantheon/blob/b75915488790ce19df2674e5f893aeb461ac4081/web/wp-content/themes/jcc/App/Shortcodes.php
-
 class CountdownTimer {
 
   constructor() {

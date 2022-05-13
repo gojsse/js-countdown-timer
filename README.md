@@ -20,3 +20,5 @@ Where `data-end-time` value should be a unix timestamp in the future. If value i
 - Change clock class to work with single timer rather than a page of timers
 - Fix flip animation bottom panel (is upside down version of last value)
 - Various styling changes, examples to be made
+
+![Screen Shot 2022-05-13 at 3 50 14 PM](https://user-images.githubusercontent.com/550747/168387976-98cf8286-70d0-4a59-8f46-48a6f96a3465.png)

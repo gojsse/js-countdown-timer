@@ -1,3 +1,3 @@
-import * as CountdownTimer from './CountdownTimer.js';
+import CountdownTimer from './CountdownTimer.js';
 
-CountdownTimer.init();
+new CountdownTimer()

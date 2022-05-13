@@ -5,7 +5,7 @@ $background-color-4: #6d809b;
 
 .style--1 {
   background-color: none;
-  background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/what-the-hex.png');
+  background-image: url('https://img.freepik.com/free-vector/abstract-organic-lines-background_1017-26669.jpg?w=1380&t=st=1652379223~exp=1652379823~hmac=9df664646067f20c1ab39fc4d1900a3d5811697e59f9b74c8f08ddc5d7c280de');
   background-repeat: repeat;
 }
 
@@ -20,7 +20,7 @@ $background-color-4: #6d809b;
 
 .style--4 {
   background-color: none;
-  background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/random_grey_variations.png');
+  background-image: url('https://img.freepik.com/free-vector/abstract-organic-lines-background_1017-26669.jpg?w=1380&t=st=1652379223~exp=1652379823~hmac=9df664646067f20c1ab39fc4d1900a3d5811697e59f9b74c8f08ddc5d7c280de');
   background-repeat: repeat;
 
   &[data-is-flip-clock='true'] {
@@ -68,7 +68,7 @@ $background-color-4: #6d809b;
 
       &__digit-flip-back,
       &__digit-flip-front {
-  
+
         div {
           background-color: $background-color-4;
           border-radius: 0;
